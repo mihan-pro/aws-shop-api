@@ -1,0 +1,37 @@
+service: products
+frameworkVersion: "3"
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: eu-west-1
+
+
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  patterns:
+#    - '!exclude-me.js'
+#    - '!exclude-me-dir/**'
+#    - include-me.js
+#    - include-me-dir/**
+
+functions:
+  getProductsList:
+    handler: getProductsList.getProductsList
+    events:
+      - http:
+          method: GET
+          path: "/products"
+          cors: true
+  getProductsById:
+    handler: getProductsById.getProductsById
+    events:
+      - http:
+          method: GET
+          path: "/products/{id}"
+          cors: true
