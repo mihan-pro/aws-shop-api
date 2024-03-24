@@ -1,6 +1,6 @@
-const {productsList} = require('./productsMock');
+import { productsList } from './productsMock.js';
 
-module.exports.getProductsById = async (event) => {
+export async function getProductsById(event){
     const { id } = event.pathParameters;
     const product = productsList.find((product) => product.id === id);
     if(!product) {

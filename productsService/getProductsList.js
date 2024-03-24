@@ -1,17 +1,12 @@
 'use strict';
+import { productsList } from './productsMock.js';
 
-const {productsList} = require("./productsMock");
-
-module.exports.getProductsList = async (event) => {
+export async function getProductsList(event)  {
   return {
     statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
-    body: JSON.stringify(
-      {
-        data: JSON.stringify(productsList)
-      }
-    ),
+    body: JSON.stringify(productsList)
   };
 };

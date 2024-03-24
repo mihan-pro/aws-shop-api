@@ -1,4 +1,4 @@
-module.exports.productsList = [
+export const productsList = [
   {
     description: "Gold Case, Sapphire Crystal, Automatic Movement, Water Resistant",
     id: "045bb63f-e14b-477f-8e66-08d394f561de",
