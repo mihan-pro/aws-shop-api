@@ -9,10 +9,27 @@ provider:
   runtime: nodejs20.x
   stage: dev
   region: eu-west-1
+  iam:
+    role:
+      name: "DynamoDB-Dev-lambdaRole"
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:eu-west-1:374052466963:table/products"
+            - "arn:aws:dynamodb:eu-west-1:374052466963:table/stocks"
+
 
 functions:
   getProductsList:
     handler: getProductsList.getProductsList
+
     events:
       - http:
           method: GET
@@ -24,4 +41,11 @@ functions:
       - http:
           method: GET
           path: "/products/{id}"
+          cors: true
+  createProduct:
+    handler: createProduct.createProduct
+    events:
+      - http:
+          method: POST
+          path: "/products"
           cors: true
