@@ -1,0 +1,27 @@
+service: products
+frameworkVersion: "3"
+
+plugins:
+  - serverless-esbuild
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: eu-west-1
+
+functions:
+  getProductsList:
+    handler: getProductsList.getProductsList
+    events:
+      - http:
+          method: GET
+          path: "/products"
+          cors: true
+  getProductsById:
+    handler: getProductsById.getProductsById
+    events:
+      - http:
+          method: GET
+          path: "/products/{id}"
+          cors: true
