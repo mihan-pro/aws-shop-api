@@ -15,12 +15,14 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.540.0",
     "@aws-sdk/client-s3": "^3.549.0",
+    "@aws-sdk/client-sqs": "^3.554.0",
     "@aws-sdk/client-sts": "^3.540.0",
     "@aws-sdk/lib-dynamodb": "^3.540.0",
     "@aws-sdk/s3-request-presigner": "^3.549.0",
     "aws-sdk": "^2.1588.0",
     "csv-parser": "^3.0.0",
-    "joi": "^17.12.2"
+    "joi": "^17.12.2",
+    "remove-bom-stream": "^2.0.0"
   },
   "author": "",
   "license": "ISC"
