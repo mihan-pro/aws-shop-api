@@ -4,6 +4,14 @@ frameworkVersion: "3"
 plugins:
   - serverless-esbuild
 
+resources:
+  Resources:
+    ItemsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: "catalogItemsQueue"
+
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -21,10 +29,10 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
+            - dynamodb:BatchWriteItem
           Resource:
             - "arn:aws:dynamodb:eu-west-1:374052466963:table/products"
             - "arn:aws:dynamodb:eu-west-1:374052466963:table/stocks"
-
 
 functions:
   getProductsList:
@@ -49,3 +57,12 @@ functions:
           method: POST
           path: "/products"
           cors: true
+  catalogBatchProcess:
+    handler: catalogBatchProcess.catalogBatchProcess
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - ItemsQueue
+              - Arn
+          batchSize: 5
