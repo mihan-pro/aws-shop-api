@@ -4,12 +4,27 @@ frameworkVersion: "3"
 plugins:
   - serverless-esbuild
 
+resources:
+  Resources:
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+    createProductTopicSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        Endpoint: "mikhail_proshin@epam.com"
+        TopicArn: !Ref createProductTopic
+        FilterPolicy:
+          count:
+          - ">0"
+
 provider:
   name: aws
   runtime: nodejs20.x
   stage: dev
   region: eu-west-1
-
   iam:
     role:
       statements:
@@ -21,10 +36,15 @@ provider:
           Action:
             - "sqs:*"
           Resource: 'arn:aws:sqs:eu-west-1:374052466963:catalogItemsQueue'
+        - Effect: "Allow"
+          Action:
+              - "sns:*"
+          Resource: !Ref createProductTopic
 
 # you can define service wide environment variables here
   environment:
     SQS_URL: "https://sqs.eu-west-1.amazonaws.com/374052466963/catalogItemsQueue"
+    SNS_ARN: !Ref createProductTopic
 
 # you can add packaging information here
 #package:

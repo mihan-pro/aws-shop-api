@@ -8,9 +8,13 @@ import {
 } from "@aws-sdk/client-s3";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { finished } from "stream/promises";
+import { PublishCommand, SNSClient } from "@aws-sdk/client-sns";
 
-const S3_Client = new S3Client({ region: "eu-west-1" });
-const SQS_Client = new SQSClient({ region: "eu-west-1" });
+const clientParams = { region: "eu-west-1" };
+
+const S3_Client = new S3Client(clientParams);
+const SQS_Client = new SQSClient(clientParams);
+const SNS_Client = new SNSClient(clientParams);
 
 export async function importFileParser(event) {
   try {
@@ -61,6 +65,14 @@ export async function importFileParser(event) {
           MessageBody: JSON.stringify(row),
         })),
         QueueUrl: process.env.SQS_URL,
+      }),
+    );
+
+    await SNS_Client.send(
+      new PublishCommand({
+        TopicArn: process.env.SNS_ARN,
+        Subject: "Products has been uploaded",
+        Message: JSON.stringify(data, null, 2),
       }),
     );
   } catch (error) {
