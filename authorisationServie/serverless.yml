@@ -1,0 +1,22 @@
+service: authorisationservie
+frameworkVersion: "3"
+useDotenv: true
+plugins:
+  - serverless-esbuild
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: eu-west-1
+  environment:
+    MIHAN_PRO: ${env:MIHAN_PRO}
+
+functions:
+    authorisation:
+      handler: basicAuthorizer.basicAuthorizer
+      events:
+        - http:
+            path: /authorisation
+            method: post
+            cors: true

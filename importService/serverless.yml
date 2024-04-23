@@ -64,8 +64,17 @@ functions:
           cors: true
           request:
             parameters:
+              headers:
+                'Authorization': true
               querystrings:
                 name: true
+          authorizer:
+            name: basicAuthorizer
+            type: token
+            arn: arn:aws:lambda:eu-west-1:374052466963:function:authorisationservie-dev-authorisation
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0
+
   importFileParser:
     handler: importFileParser.importFileParser
     events:
